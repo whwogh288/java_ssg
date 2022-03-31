@@ -8,9 +8,16 @@ public class Main {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		String command = sc.nextLine();
-		System.out.printf("입력된 명령어 : %s\n", command);
-		sc.close();
+		while( true ) {
+			System.out.printf("명령어 ) ");
+			String command = sc.nextLine();
+			
+			if(command.equals("system exit")) {
+				break;
+			}
+		}
+		sc. close();
+		
 		
 		System.out.println("== 프로그램 종료 ==");
 	}
