@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import exam1.controller.ArticleController;
+import exam1.controller.Controller;
 import exam1.controller.MemberController;
 import exam1.dto.Article;
 import exam1.dto.Member;
@@ -25,7 +26,7 @@ public class App {
 		makeTestDate();
 
 		Scanner sc = new Scanner(System.in);
-		
+
 		MemberController memberController = new MemberController(sc, members);
 		ArticleController articleController = new ArticleController(sc, articles);
 
@@ -41,23 +42,31 @@ public class App {
 			if (command.equals("system exit")) {
 				break;
 			}
+			String[] commandBits = command.split(" ");
 			
-			if (command.equals("member join")) {
-				memberController.doJoin();
+			if ( commandBits.length == 1) {
+				System.out.println("존재하지 않는 명령어입니다.");
+				continue;
 			}
-			else if (command.equals("article write")) {
-				articleController.doWrite();
-			} else if (command.startsWith("article list")) {
-				articleController.showList(command);
-			} else if (command.startsWith("article detail ")) {
-				articleController.showDetail(command);
-			} else if (command.startsWith("article modify ")) {
-				articleController.doModify(command);
-			} else if (command.startsWith("article delete ")) {
-				articleController.doDelete(command);
-			} else {
-				System.out.printf("%s(은)는 존재하지 않는 명령어 입니다.\n", command);
+			
+			String controllerName = commandBits[0];
+			String actionMethodName = commandBits[1];
+
+			Controller controller = null;
+			
+			if ( controllerName.equals("article")) {
+				controller = articleController;
 			}
+			else if ( controllerName.equals("member")) {
+				controller = memberController;
+			}
+			else {
+				System.out.println("존재하지 않는 명령어입니다.");
+				continue;
+			}
+			
+			controller.doAction(command, actionMethodName);
+
 		}
 		sc.close();
 
