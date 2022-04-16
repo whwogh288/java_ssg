@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import exam1.controller.ArticleController;
+import exam1.controller.MemberController;
 import exam1.dto.Article;
+import exam1.dto.Member;
 import exam1.util.Util;
 
 public class App {
 	private List<Article> articles;
+	private List<Member> members;
 
 	public App() {
 		articles = new ArrayList<>();
+		members = new ArrayList<>();
 	}
 
 	public void start() {
@@ -20,6 +25,9 @@ public class App {
 		makeTestDate();
 
 		Scanner sc = new Scanner(System.in);
+		
+		MemberController memberController = new MemberController(sc, members);
+		ArticleController articleController = new ArticleController();
 
 		while (true) {
 			System.out.printf("명령어 ) ");
@@ -33,8 +41,11 @@ public class App {
 			if (command.equals("system exit")) {
 				break;
 			}
-
-			if (command.equals("article write")) {
+			
+			if (command.equals("member join")) {
+				memberController.doJoin();
+			}
+			else if (command.equals("article write")) {
 				int id = articles.size() + 1;
 				String regDate = Util.getNowDateStr();
 				System.out.printf("제목 : ");
@@ -45,9 +56,12 @@ public class App {
 				Article article = new Article(id, regDate, title, body);
 				articles.add(article);
 
-				System.out.printf("%d번글이 생성되었습니다.\n", id);
+				System.out.printf("%d번 글이 생성되었습니다.\n", id);
 			} else if (command.startsWith("article list")) {
-				
+				if(articles.size() == 0) {
+					System.out.println("게시물이 없습니다.");
+					continue;
+				}
 				
 				String searchKeyword = command.substring("article list".length()).trim();
 				
@@ -65,10 +79,7 @@ public class App {
 						System.out.println("검색결과가 존재하지 않습니다.");
 						continue;
 					}
-					
 				}
-				
-				
 				System.out.println("번호 : 조회 : 제목");
 
 				for (int i = forListArticles.size() - 1; i >= 0; i--) {
@@ -131,7 +142,7 @@ public class App {
 				articles.remove(foundIndex);
 				System.out.printf("%d번 게실물이 삭제되었습니다.\n", id);
 			} else {
-				System.out.printf("%s(은)는 존재하지 않는 명령어 입니다.");
+				System.out.printf("%s(은)는 존재하지 않는 명령어 입니다.\n", command);
 			}
 		}
 		sc.close();
