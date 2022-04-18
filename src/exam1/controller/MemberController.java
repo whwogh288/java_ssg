@@ -1,5 +1,6 @@
 package exam1.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,21 +12,22 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private String command;
 	private String actionMethodName;
-	
+
+	public MemberController(Scanner sc) {
+		this.sc = sc;
+
+		members = new ArrayList<Member>();
+	}
+
 	public void doAction(String command, String actionMethodName) {
 		this.command = command;
 		this.actionMethodName = actionMethodName;
-		
-		switch ( actionMethodName ) {
+
+		switch (actionMethodName) {
 		case "join":
 			doJoin();
 			break;
 		}
-	}
-
-	public MemberController(Scanner sc, List<Member> members) {
-		this.sc = sc;
-		this.members = members;
 	}
 
 	private int getMemberIndexByLoginId(String loginId) {
@@ -49,7 +51,7 @@ public class MemberController extends Controller {
 		return false;
 	}
 
-	public void doJoin() {
+	private void doJoin() {
 		int id = members.size() + 1;
 		String regDate = Util.getNowDateStr();
 
