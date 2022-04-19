@@ -13,7 +13,6 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private String command;
 	private String actionMethodName;
-	private Member loginedMember;
 
 	public MemberController(Scanner sc) {
 		this.sc = sc;
@@ -41,10 +40,6 @@ public class MemberController extends Controller {
 		}
 	}
 	
-	private boolean isLogined() {
-		return loginedMember != null;
-	}
-
 	private void doLogout() {
 		if ( isLogined() == false ) {
 			System.out.println("로그인상태가 아닙니다.");
