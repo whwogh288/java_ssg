@@ -47,7 +47,7 @@ public class ArticleController extends Controller {
 	}
 
 	public void makeTestDate() {
-		System.out.println("테스트를 위한 데이터를 생성합니다.");
+		System.out.println("테스트를 위한 게시물데이터를 생성합니다.");
 
 		articles.add(new Article(1, Util.getNowDateStr(), "제목1", "내용1"));
 		articles.add(new Article(2, Util.getNowDateStr(), "제목2", "내용2"));
