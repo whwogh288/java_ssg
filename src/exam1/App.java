@@ -15,7 +15,7 @@ public class App {
 
 		MemberController memberController = new MemberController(sc);
 		ArticleController articleController = new ArticleController(sc);
-		
+
 		memberController.makeTestDate();
 		articleController.makeTestDate();
 
@@ -32,28 +32,51 @@ public class App {
 				break;
 			}
 			String[] commandBits = command.split(" ");
-			
-			if ( commandBits.length == 1) {
+
+			if (commandBits.length == 1) {
 				System.out.println("존재하지 않는 명령어입니다.");
 				continue;
 			}
-			
+
 			String controllerName = commandBits[0];
 			String actionMethodName = commandBits[1];
 
 			Controller controller = null;
-			
-			if ( controllerName.equals("article")) {
+
+			if (controllerName.equals("article")) {
 				controller = articleController;
-			}
-			else if ( controllerName.equals("member")) {
+			} else if (controllerName.equals("member")) {
 				controller = memberController;
-			}
-			else {
+			} else {
 				System.out.println("존재하지 않는 명령어입니다.");
 				continue;
 			}
-			
+
+			String actionName = controllerName + "/" + actionMethodName;
+
+			switch (actionName) {
+			case "article/write":
+			case "article/delete":
+			case "article/modify":
+			case "member/logout":
+				if (Controller.isLogined() == false) {
+					System.out.println("로그인 후 이용해주세요.");
+					continue;
+				}
+				break;
+
+			}
+			switch (actionName) {
+			case "member/join":
+			case "member/login":
+				if (Controller.isLogined()) {
+					System.out.println("로그아웃 후 이용해주세요.");
+					continue;
+				}
+				break;
+
+			}
+
 			controller.doAction(command, actionMethodName);
 
 		}
