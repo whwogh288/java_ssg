@@ -1,24 +1,21 @@
 package exam1.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import exam1.container.Container;
-import exam1.dto.Article;
 import exam1.dto.Member;
+import exam1.service.MemberService;
 import exam1.util.Util;
 
 public class MemberController extends Controller {
 	private Scanner sc;
-	private List<Member> members;
 	private String command;
 	private String actionMethodName;
+	private MemberService memberService;
 
 	public MemberController(Scanner sc) {
 		this.sc = sc;
-
-		members = Container.memberDao.members;
+		memberService = Container.memberService;
 	}
 
 	public void doAction(String command, String actionMethodName) {
@@ -52,7 +49,7 @@ public class MemberController extends Controller {
 		System.out.printf("로그인 비번 : ");
 		String loginPw = sc.nextLine();
 		
-		Member member = getMemberByLoginId(loginId);
+		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if ( member == null ) {
 			System.out.println("해당회원은 존재하지 않습니다.");
@@ -66,30 +63,9 @@ public class MemberController extends Controller {
 		System.out.printf("로그인 성공!, %s님 환영합니다.\n", loginedMember.name);
 		
 	}
-
-	private Member getMemberByLoginId(String loginId) {
-		int index = getMemberIndexByLoginId(loginId);
-		
-		if ( index == -1 ) {
-			return null;
-		}
-		
-		return members.get(index);
-	}
-
-	private int getMemberIndexByLoginId(String loginId) {
-		int i = 0;
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-
+	
 	private boolean isJoinableLoginId(String loginId) {
-		int index = getMemberIndexByLoginId(loginId);
+		int index = memberService.getMemberIndexByLoginId(loginId);
 
 		if (index == -1) {
 			return true;
@@ -135,7 +111,7 @@ public class MemberController extends Controller {
 		String name = sc.nextLine();
 
 		Member member = new Member(id, regDate, loginId, loginPw, name);
-		Container.memberDao.add(member);
+		memberService.join(member);
 
 		System.out.printf("%d번 회원이 생성되었습니다. 환영합니다.\n", id);
 
