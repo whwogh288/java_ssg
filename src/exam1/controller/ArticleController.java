@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 import exam1.container.Container;
 import exam1.dto.Article;
-import exam1.dto.Member;
 import exam1.service.ArticleService;
+import exam1.service.MemberService;
 import exam1.util.Util;
 
 public class ArticleController extends Controller {
@@ -15,10 +15,12 @@ public class ArticleController extends Controller {
 	private String command;
 	private String actionMethodName;
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
 		articleService = Container.articleService;
+		memberService = Container.memberService;
 	}
 
 	public void doAction(String command, String actionMethodName) {
@@ -91,16 +93,7 @@ public class ArticleController extends Controller {
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 			Article article = forPrintArticles.get(i);
 
-			String writerName = null;
-
-			List<Member> members = Container.memberDao.members;
-
-			for (Member member : members) {
-				if (article.memberId == member.id) {
-					writerName = member.name;
-					break;
-				}
-			}
+			String writerName = memberService.getMemberNameById(article.memberId);
 
 			System.out.printf("%4d : %6s : %4d : %s\n", article.id, writerName, article.hit, article.title);
 		}

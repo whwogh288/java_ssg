@@ -3,6 +3,7 @@ package exam1.container;
 import exam1.dao.ArticleDao;
 import exam1.dao.MemberDao;
 import exam1.service.ArticleService;
+import exam1.service.ExportService;
 import exam1.service.MemberService;
 
 public class Container {
@@ -10,11 +11,13 @@ public class Container {
 	public static MemberDao memberDao;
 	public static ArticleService articleService;
 	public static MemberService memberService;
+	public static ExportService exportService;
 	
 	static {
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
 		articleService = new ArticleService();
 		memberService = new MemberService();
+		exportService = new ExportService();
 	}
 }
